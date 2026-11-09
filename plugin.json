@@ -1,0 +1,14 @@
+{
+  "name": "model-orchestrator",
+  "displayName": "Model Orchestrator (Planner-Executor)",
+  "version": "1.0.0",
+  "description": "Save 80-90% of Argon/Opus tokens by automatically delegating research, multi-file coding, and testing to Gemini Flash subagents while keeping planning and diff review in the primary model.",
+  "author": "Misael Marcos",
+  "license": "MIT",
+  "repository": "https://github.com/MisaelMarcos/antigravity-model-orchestrator",
+  "suggestedPrompts": [
+    "Orquestrar modelo e gerar AGENTS.md no projeto atual",
+    "/model-orchestrator",
+    "Verificar status da orquestração de modelos"
+  ]
+}
