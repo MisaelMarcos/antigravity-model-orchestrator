@@ -6,7 +6,7 @@
 
 > **Automatic Model Orchestration (Planner-Executor) & Instant Architecture Mapping (`AGENTS.md`) for Google Antigravity.**
 >
-> Economize de **80% a 90%** dos seus tokens caros de raciocínio (Argon / Claude Opus) delegando varreduras, buscas e edições multi-arquivo para subagentes ultrarrápidos **Gemini Flash**, mantendo 100% da qualidade arquitetural e revisão de código no modelo principal.
+> Economize de **80% a 90%** dos seus tokens caros de raciocínio (**Gemini 4 Argon** / **Claude Opus / Sonnet 5.5**) delegando varreduras, buscas e edições multi-arquivo para subagentes ultrarrápidos **Gemini 3.8 Flash** (`Model: "flash"`), mantendo 100% da qualidade arquitetural e revisão de código no modelo principal.
 
 ---
 
@@ -17,26 +17,27 @@
 ## 🇧🇷 Versão em Português
 
 ### 🎯 O Problema
-Modelos de fronteira e raciocínio profundo (como **Argon** ou **Claude 3.5/3.7 Opus**) são brilhantes em arquitetura e planejamento. No entanto:
+Modelos de fronteira e raciocínio profundo (como **Gemini 4 Argon** ou **Claude Opus / Sonnet 5.5**) são brilhantes em arquitetura e planejamento. No entanto:
 1. **Consumo massivo de contexto**: Fazer o modelo principal ler dezenas de arquivos, logs de compilação ou árvores de diretórios queima a janela de contexto muito rápido.
 2. **Custo e Lentidão**: Cada iteração com dezenas de milhares de tokens no modelo principal custa caro e introduz latência perceptível.
 3. **Perda de Foco**: Modelos de raciocínio se perdem em tarefas mecânicas (adicionar um campo repetitivo em 5 arquivos, rodar linter, consertar imports quebrados).
 
 ### 💡 A Solução: Padrão Arquiteto-Executor (Planner-Executor)
 O **Antigravity Model Orchestrator** implementa automaticamente uma divisão clara de responsabilidades:
-- **Modelo Principal (Lead Architect & Reviewer):** Atua como Arquiteto Líder. Planeja, desenha contratos técnicos, inspeciona diffs reais e conversa com o desenvolvedor.
-- **Subagentes Flash (`Model: "flash"`):** Executam o trabalho braçal em contextos isolados — pesquisas em arquivos, edições cirúrgicas, execução de testes no terminal e criação de logs.
+- **Modelo Principal (Lead Architect & Reviewer):** Atua como Arquiteto Líder (**Gemini 4 Argon** / **Claude Opus / Sonnet 5.5**). Planeja, desenha contratos técnicos, inspeciona diffs reais e conversa com o desenvolvedor.
+- **Subagentes Flash (`Gemini 3.8 Flash`, `Model: "flash"`):** Executam o trabalho braçal em contextos isolados — pesquisas em arquivos, edições cirúrgicas, execução de testes no terminal e criação de logs.
 - **Mapa Arquitetural Automático (`AGENTS.md`):** Garante que todo projeto tenha um arquivo `AGENTS.md` enxuto (30 a 60 linhas) na raiz, permitindo que qualquer subagente compreenda a stack imediatamente sem queimar tokens varrendo o disco repetidamente.
+- **Consciência Temporal e de Versão (Guardrail Anti-Desatualização):** Impede que os modelos assumam sintaxes ou versões antigas de corte pré-treinamento, ancorando operações em 2026 e inspecionando versões reais instaladas (`package.json`, `requirements.txt`).
 
 ---
 
 ### 📊 Tabela Comparativa de Economia de Tokens
 
-| Tipo de Tarefa | Abordagem Tradicional (Apenas Modelo Principal) | Com Model Orchestrator (Argon/Opus + Flash) | Economia de Tokens Nobres |
+| Tipo de Tarefa | Abordagem Tradicional (Apenas Modelo Principal) | Com Model Orchestrator (Argon/Opus 5.5 + Gemini 3.8 Flash) | Economia de Tokens Nobres |
 | :--- | :--- | :--- | :--- |
 | **Pesquisa em Código / Diagnóstico** | Lê 8 a 15 arquivos no contexto primário (~45.000 tokens) | Flash pesquisa em sandbox isolada; reporta apenas caminhos e assinaturas (~800 tokens para o principal) | **~98%** |
-| **Refatoração Multi-Arquivo** | Carrega todos os arquivos no contexto primário (~60.000 tokens) | Argon planeja a spec (1.500 tokens) → Flash executa e roda testes → Argon revisa diff (1.200 tokens) | **~85%** |
-| **Criação de Features Novas** | 100.000+ tokens acumulados rapidamente com logs de terminal | Argon desenha a arquitetura → Flash subagente implementa → Argon valida diff cirúrgico | **~80% a 90%** |
+| **Refatoração Multi-Arquivo** | Carrega todos os arquivos no contexto primário (~60.000 tokens) | Argon/Opus planeja a spec (1.500 tokens) → Flash executa e roda testes → Argon revisa diff (1.200 tokens) | **~85%** |
+| **Criação de Features Novas** | 100.000+ tokens acumulados rapidamente com logs de terminal | Argon/Opus desenha a arquitetura → Flash subagente implementa → Argon valida diff cirúrgico | **~80% a 90%** |
 | **Descoberta de Arquitetura de Projeto** | Mapeamento manual repetido a cada nova sessão (~10.000 tokens) | Leitura direta do `AGENTS.md` conciso pré-gerado (~500 tokens) | **~95%** |
 
 ---
@@ -85,22 +86,23 @@ chmod +x install.sh && ./install.sh
 ## 🇺🇸 English Version
 
 ### 🎯 The Problem
-Frontier reasoning models (**Argon**, **Claude 3.5/3.7 Opus**) excel at architectural decisions, deep logic, and complex planning. However:
+Frontier reasoning models (**Gemini 4 Argon**, **Claude Opus / Sonnet 5.5**) excel at architectural decisions, deep logic, and complex planning. However:
 1. **Context Bloat**: Reading dozens of files, build logs, and directory structures fills up precious context windows fast.
 2. **High Latency & Costs**: Multi-turn frontier calls with large context introduce lag and burn through token budgets.
 3. **Mechanical Distractions**: Using reasoning tokens for mechanical edits, linter formatting, or terminal testing is deeply inefficient.
 
 ### 💡 The Solution: Planner-Executor Pattern
 **Antigravity Model Orchestrator** automates an optimal separation of concerns:
-- **Primary Model (Lead Architect & Reviewer):** Stays high-level. Designs specifications, formulates steps, reviews compact diffs, and orchestrates.
-- **Flash Subagents (`Model: "flash"`):** Run isolated in the background to handle multi-file reads, targeted searches, code replacements, and build/test commands.
+- **Primary Model (Lead Architect & Reviewer):** Stays high-level (**Gemini 4 Argon** / **Claude Opus / Sonnet 5.5**). Designs specifications, formulates steps, reviews compact diffs, and orchestrates.
+- **Flash Subagents (`Gemini 3.8 Flash`, `Model: "flash"`):** Run isolated in the background to handle multi-file reads, targeted searches, code replacements, and build/test commands.
 - **Automatic `AGENTS.md` Project Index:** Automatically bootstraps and maintains a concise (30–60 line) architecture index at the root of every workspace. Subagents and primary models immediately understand the codebase without blind file scans.
+- **Temporal & Version Awareness (Anti-Staleness):** Enforces 2026 modern ecosystem context and mandates checking actual installed dependency versions rather than assuming legacy syntax.
 
 ---
 
 ### 📊 Token & Cost Efficiency Breakdown
 
-| Task Type | Monolithic (Primary Model Only) | Model Orchestrator (Primary + Flash) | Frontier Token Savings |
+| Task Type | Monolithic (Primary Model Only) | Model Orchestrator (Argon/Opus 5.5 + Gemini 3.8 Flash) | Frontier Token Savings |
 | :--- | :--- | :--- | :--- |
 | **Codebase Research & Search** | Dumps 8–15 full files into primary context (~45k tokens) | Flash searches in sandbox; returns exact file paths and signatures (~800 tokens to primary) | **~98%** |
 | **Multi-File Refactoring** | Streams all touched files into main conversation (~60k tokens) | Primary designs spec (1.5k tokens) → Flash applies edits & tests → Primary reviews diff (1.2k tokens) | **~85%** |

@@ -61,19 +61,24 @@ Install-FileContent "rules\model-orchestration.md" "$rulesDir\model-orchestratio
 Install-FileContent "skills\model-orchestrator\SKILL.md" "$skillsDir\SKILL.md"
 Install-FileContent "skills\model-orchestrator\resources\model-orchestration.md" "$skillResDir\model-orchestration.md"
 
-# 3. Configure ~/.gemini/GEMINI.md
-Write-Host "`n[2/3] Updating ~/.gemini/GEMINI.md..." -ForegroundColor Yellow
+# 3. Configure ~/.gemini/GEMINI.md and ~/.gemini/config/GEMINI.md
+Write-Host "`n[2/3] Updating GEMINI.md instructions..." -ForegroundColor Yellow
 $ruleContent = Get-Content -Raw "$skillResDir\model-orchestration.md"
-if (-not (Test-Path $geminiMd)) {
-    Set-Content -Path $geminiMd -Value $ruleContent -Encoding UTF8
-    Write-Host "[+] Created $geminiMd with Model Orchestrator rules." -ForegroundColor Green
-} else {
-    $existing = Get-Content -Raw $geminiMd
-    if ($existing -notmatch "Automatic Model Orchestration & Project Mapping") {
-        Add-Content -Path $geminiMd -Value "`n`n$ruleContent" -Encoding UTF8
-        Write-Host "[+] Appended Model Orchestrator rules to $geminiMd." -ForegroundColor Green
+$configGeminiMd = "$configDir\GEMINI.md"
+
+foreach ($targetMd in @($geminiMd, $configGeminiMd)) {
+    if (-not (Test-Path $targetMd)) {
+        Set-Content -Path $targetMd -Value $ruleContent -Encoding UTF8
+        Write-Host "[+] Created $targetMd with Model Orchestrator rules." -ForegroundColor Green
     } else {
-        Write-Host "[*] Model Orchestration rules already present in $geminiMd." -ForegroundColor DarkGray
+        $existing = Get-Content -Raw $targetMd
+        if ($existing -notmatch "Automatic Model Orchestration & Project Mapping") {
+            Add-Content -Path $targetMd -Value "`n`n$ruleContent" -Encoding UTF8
+            Write-Host "[+] Appended Model Orchestrator rules to $targetMd." -ForegroundColor Green
+        } else {
+            Set-Content -Path $targetMd -Value $ruleContent -Encoding UTF8
+            Write-Host "[+] Refreshed Model Orchestrator rules in $targetMd." -ForegroundColor Green
+        }
     }
 }
 

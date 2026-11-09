@@ -51,20 +51,25 @@ install_file "rules/model-orchestration.md" "$RULES_DIR/model-orchestration.md"
 install_file "skills/model-orchestrator/SKILL.md" "$SKILLS_DIR/SKILL.md"
 install_file "skills/model-orchestrator/resources/model-orchestration.md" "$SKILL_RES_DIR/model-orchestration.md"
 
-# 3. Configure ~/.gemini/GEMINI.md
-echo -e "\n\033[1;33m[2/3] Updating ~/.gemini/GEMINI.md...\033[0m"
-if [ ! -f "$GEMINI_MD" ]; then
-    cat "$SKILL_RES_DIR/model-orchestration.md" > "$GEMINI_MD"
-    echo -e "\033[0;32m[+] Created $GEMINI_MD with Model Orchestrator rules.\033[0m"
-else
-    if ! grep -q "Automatic Model Orchestration & Project Mapping" "$GEMINI_MD"; then
-        echo -e "\n" >> "$GEMINI_MD"
-        cat "$SKILL_RES_DIR/model-orchestration.md" >> "$GEMINI_MD"
-        echo -e "\033[0;32m[+] Appended Model Orchestrator rules to $GEMINI_MD.\033[0m"
+# 3. Configure ~/.gemini/GEMINI.md and ~/.gemini/config/GEMINI.md
+echo -e "\n\033[1;33m[2/3] Updating GEMINI.md instructions...\033[0m"
+CONFIG_GEMINI_MD="$CONFIG_DIR/GEMINI.md"
+
+for target_md in "$GEMINI_MD" "$CONFIG_GEMINI_MD"; do
+    if [ ! -f "$target_md" ]; then
+        cat "$SKILL_RES_DIR/model-orchestration.md" > "$target_md"
+        echo -e "\033[0;32m[+] Created $target_md with Model Orchestrator rules.\033[0m"
     else
-        echo -e "\033[0;90m[*] Model Orchestration rules already present in $GEMINI_MD.\033[0m"
+        if ! grep -q "Automatic Model Orchestration & Project Mapping" "$target_md"; then
+            echo -e "\n" >> "$target_md"
+            cat "$SKILL_RES_DIR/model-orchestration.md" >> "$target_md"
+            echo -e "\033[0;32m[+] Appended Model Orchestrator rules to $target_md.\033[0m"
+        else
+            cat "$SKILL_RES_DIR/model-orchestration.md" > "$target_md"
+            echo -e "\033[0;32m[+] Refreshed Model Orchestrator rules in $target_md.\033[0m"
+        fi
     fi
-fi
+done
 
 # 4. Success summary
 echo -e "\n\033[1;36m[3/3] Installation Complete!\033[0m"

@@ -45,3 +45,12 @@ To avoid context bloat while ensuring the Primary Model performs a **real code r
   2. **Compact Diff / Key Code Snippets** of the core logic changed (excluding noisy terminal logs or unchanged boilerplate).
   3. **Verification Status** (build/test command run and PASS/FAIL result).
 - **Primary Model Review:** Always inspect the returned diff/snippets (or run a targeted `git diff` / surgical `read_file` on critical sections) to verify correctness before presenting the final answer to the user.
+
+---
+
+## 4. Temporal & Version Awareness (Anti-Staleness Guardrail)
+
+Models must NEVER rely on outdated pre-training cutoff priors for versions, dates, or APIs:
+- **Current Ecosystem Context (2026):** Primary frontier/reasoning models include **Gemini 4 Argon** and **Claude Opus / Sonnet 5.5**; fast execution subagents run on **Gemini 3.8 Flash** (`Model: "flash"`).
+- **Verify Installed Package Versions First:** Before writing code or configs, always inspect `<workspace_root>/AGENTS.md` or the project's manifest (`package.json`, `requirements.txt`, `pyproject.toml`) to match the exact installed major versions (e.g., Tailwind v4 vs v3, React 18/19, modern SDKs) rather than assuming legacy syntax from training data.
+- **Anchor to Current System Date:** Always use the live runtime year/date (`2026`) for web searches (`search_web`), documentation lookups, licenses, migrations, and test fixtures.
